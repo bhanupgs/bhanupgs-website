@@ -4,240 +4,171 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BhanuPGS AI — Agentic AI Orchestrator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet"/>
   <style>
-    /* RESET & BASE */
+    /* ─── RESTORED ORIGINAL STYLES ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --navy: #0d1117;
-      --blue: #0066ff;
-      --purple: #8a2be2;
-      --text-main: #1a1d23;
-      --text-muted: #6b7280;
-      --bg-light: #f8fafc;
-      --border: #e2e8f0;
+      --bg: #060910;
+      --surface: #0d1117;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --accent: #0066ff; /* Blue from screenshot */
+      --accent-green: #00e5a0;
+      --glow: rgba(0, 102, 255, 0.15);
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: #ffffff;
-      color: var(--text-main);
-      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      line-height: 1.6;
       overflow-x: hidden;
+      cursor: none;
     }
 
-    /* ─── NAVBAR ─── */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 6%;
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+    /* Custom cursor restored */
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s; mix-blend-mode: screen; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(0,102,255,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s ease; }
 
-    .nav-logo-wrap { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
-    .logo-icon {
-      background: var(--blue);
-      color: #fff;
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.2rem;
-    }
-    .logo-text-group { display: flex; flex-direction: column; }
-    .logo-title {
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
-      color: var(--navy); letter-spacing: -0.01em; text-transform: uppercase;
-    }
-    .logo-title span { color: var(--blue); }
-    .logo-sub { font-size: 0.55rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Noise and Grid overlay restored */
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,102,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,102,255,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .nav-links a {
-      color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .nav-links a:hover { color: var(--blue); }
-    .nav-divider { width: 1px; height: 20px; background: #cbd5e1; margin: 0 0.5rem; }
-    .nav-brand { color: var(--text-muted) !important; letter-spacing: 0.1em !important; }
+    /* NAVBAR restored with AI branding */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); backdrop-filter: blur(20px); background: rgba(6,9,16,0.7); }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-brand { color: var(--text) !important; font-weight: 800 !important; border-left: 1px solid var(--border); padding-left: 1.5rem; }
 
-    /* ─── HERO SECTION ─── */
-    .hero {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: center;
-      padding: 6rem 6%;
-      gap: 4rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .hero-content { max-width: 600px; }
+    /* HERO SECTION with screenshot headlines */
+    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem; z-index: 1; }
+    .hero-glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,102,255,0.08) 0%, transparent 70%); pointer-events: none; }
     
-    .badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: #eff6ff; color: var(--blue);
-      padding: 0.5rem 1rem; border-radius: 50px;
-      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-      margin-bottom: 2rem; border: 1px solid #dbeafe;
-    }
-    .badge::before { content: ''; width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+    .hero-tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: rgba(0, 102, 255, 0.1); padding: 0.4rem 1rem; border-radius: 20px; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; align-self: flex-start; border: 1px solid rgba(0, 102, 255, 0.2); }
+    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
 
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3rem, 5vw, 4.5rem);
-      line-height: 1.05;
-      color: var(--navy);
-      margin-bottom: 2rem;
-    }
-    .hero-title span { color: var(--blue); position: relative; }
+    .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; margin-bottom: 2rem; max-width: 900px; }
+    .hero-title span { color: var(--accent); }
     
-    .hero-desc {
-      font-size: 1.1rem; color: var(--text-muted);
-      line-height: 1.6; margin-bottom: 2.5rem;
-    }
-    .hero-desc strong { color: var(--navy); font-weight: 700; }
+    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 650px; line-height: 1.8; margin-bottom: 3rem; }
+    .hero-sub strong { color: #fff; font-weight: 600; }
 
-    /* ─── CONSOLE CARD ─── */
-    .console-card {
-      background: #ffffff;
-      border-radius: 24px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-      border: 1px solid var(--border);
-      padding: 2rem;
-      position: relative;
-    }
-    .console-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;
-    }
+    /* INPUT CONSOLE integration */
+    .console-box { max-width: 700px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; margin-bottom: 4rem; backdrop-filter: blur(10px); }
+    .console-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
     .dots { display: flex; gap: 6px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; }
-    .console-ver { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #94a3b8; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .story-area { width: 100%; height: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; resize: none; }
+    .btn-run { background: var(--accent); color: #fff; border: none; padding: 1rem 2rem; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: none; display: flex; align-items: center; gap: 0.8rem; transition: 0.3s; }
+    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3); }
 
-    .input-label-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
-    .label-text { font-weight: 700; color: var(--navy); font-size: 0.85rem; }
-    .ai-badge { font-size: 0.6rem; color: var(--blue); font-weight: 800; text-transform: uppercase; }
+    /* Original Sections Styling */
+    section { position: relative; z-index: 1; padding: 7rem 3rem; }
+    .section-tag { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent-green); }
+    .section-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 3rem; }
+    
+    footer { border-top: 1px solid var(--border); padding: 3rem; display: flex; justify-content: space-between; align-items: center; }
+    .footer-email { color: var(--accent); text-decoration: none; font-weight: 700; }
 
-    .story-input {
-      width: 100%; height: 180px;
-      background: #f8fafc; border: 1px solid #e2e8f0;
-      border-radius: 12px; padding: 1.5rem;
-      font-family: 'Inter', sans-serif; font-size: 0.9rem;
-      color: var(--text-main); resize: none; margin-bottom: 1.5rem;
-    }
-    .story-input:focus { outline: none; border-color: var(--blue); }
-
-    .btn-generate {
-      width: 100%; background: var(--navy); color: #fff;
-      border: none; padding: 1.1rem; border-radius: 10px;
-      font-family: 'Inter', sans-serif; font-weight: 700;
-      font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 0.8rem;
-      transition: 0.2s;
-    }
-    .btn-generate:hover { background: #1a202c; transform: translateY(-2px); }
-    .btn-generate svg { width: 18px; fill: none; stroke: currentColor; stroke-width: 2.5; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 4rem 6%; border-top: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-email { color: var(--blue); font-weight: 700; text-decoration: none; font-size: 0.9rem; }
-
-    @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; text-align: center; }
-      .hero-content { margin: 0 auto; }
-      .badge { align-self: center; }
-      .btn-generate { width: auto; min-width: 250px; margin: 0 auto; }
-    }
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
   <nav>
-    <a href="#" class="nav-logo-wrap">
-      <div class="logo-icon">⚡</div>
-      <div class="logo-text-group">
-        <div class="logo-title">Agentic AI <span>Orchestrator</span></div>
-        <div class="logo-sub">Multi-Agent Quality Engineering</div>
-      </div>
-    </a>
+    <a href="#" class="nav-logo">BhanuPGS<span> AI</span></a>
     <ul class="nav-links">
-      <li><a href="#">How it works</a></li>
-      <li><a href="#">Traceability</a></li>
-      <li class="nav-divider"></li>
-      <li><a href="#" class="nav-brand">BHANUPGS</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#traceability">Traceability</a></li>
+      <li><a href="#collaborate">Collaborate</a></li>
+      <li class="nav-brand">BHANUPGS</li>
     </ul>
   </nav>
 
   <section class="hero">
-    <div class="hero-content">
-      <div class="badge">Multi-Agent QA Workforce</div>
-      <h1 class="hero-title">Turn User Stories into <span>Test Assets</span>.</h1>
-      <p class="hero-desc">
-        Automate the transition from raw requirements to enterprise-grade test strategies and Selenium scripts. Powered by specialized <strong>Architect</strong> and <strong>Developer</strong> AI agents.
-      </p>
-      <a href="mailto:gbhanu@bhanupgs.in" class="footer-email">Connect with BhanuPGS AI →</a>
-    </div>
+    <div class="hero-glow"></div>
+    <div class="hero-tag">Multi-Agent QA Workforce</div>
+    
+    <!-- TAGLINE HEADLINES RESTORED -->
+    <h1 class="hero-title">
+      Turn User Stories into <br><span>Test Assets.</span>
+    </h1>
 
-    <div class="console-card">
+    <p class="hero-sub">
+      Automate the transition from raw requirements to enterprise-grade test strategies and Selenium scripts. Powered by specialized <strong>Architect</strong> and <strong>Developer</strong> AI agents.
+    </p>
+
+    <!-- INTEGRATED INPUT CONSOLE -->
+    <div class="console-box reveal">
       <div class="console-header">
-        <div class="dots">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-        <div class="console-ver">INPUT_CONSOLE_V4.0</div>
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div style="font-size: 0.6rem; color: var(--muted);">INPUT_CONSOLE_V4.0</div>
       </div>
-
-      <div class="input-label-row">
-        <div class="label-text">Enterprise User Story</div>
-        <div class="ai-badge" id="aiStatus">AI Analysis Active</div>
-      </div>
-
-      <textarea id="storyBox" class="story-input" placeholder="Example: As a user, I want to login to my AWS RDP portal using Okta SSO..."></textarea>
-
-      <button class="btn-generate" id="runBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem;">Enterprise User Story</div>
+      <textarea class="story-area" placeholder="Example: As a user, I want to login to my AWS RDP portal..."></textarea>
+      <button class="btn-run">
+        <svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Generate Test Suite
       </button>
-      
-      <div id="output" style="margin-top: 1rem; font-size: 0.75rem; font-family: 'DM Mono'; color: var(--text-muted); height: 20px;"></div>
     </div>
   </section>
 
-  <footer>
-    <div class="logo-title" style="font-size: 0.9rem;">BhanuPGS <span>AI</span></div>
-    <a href="mailto:gbhanu@bhanupgs.in" class="footer-email">gbhanu@bhanupgs.in</a>
-    <p style="font-size: 0.75rem; color: var(--text-muted);">© 2026 Independent AI Research Lab</p>
+  <!-- RESEARCH AREAS (Original Section Restored) -->
+  <section id="how-it-works">
+    <div class="section-tag reveal">Traceability</div>
+    <h2 class="section-title reveal">Full lifecycle<br><em>visibility.</em></h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+      <div class="console-box reveal" style="margin-bottom: 0;">
+        <h3 style="font-family: 'Syne'; margin-bottom: 1rem;">Multi-Cloud Orchestration</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Validate L2/L3 networking protocols across AWS, Azure, and GCP through autonomous agents.</p>
+      </div>
+      <div class="console-box reveal" style="margin-bottom: 0;">
+        <h3 style="font-family: 'Syne'; margin-bottom: 1rem;">n8n Integration</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Seamlessly trigger agentic workflows via webhook for immediate test asset generation.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="collaborate">
+    <div class="nav-logo">BhanuPGS<span> AI</span></div>
+    <a href="mailto:gbhanu@bhanupgs.in" class="footer-email">gbhanu@bhanupgs.in →</a>
+    <p style="font-size: 0.75rem; color: var(--muted);">© 2026 Independent AI Research Lab</p>
   </footer>
 
   <script>
-    const btn = document.getElementById('runBtn');
-    const output = document.getElementById('output');
-    const status = document.getElementById('aiStatus');
+    // Original Cursor Logic Restored[cite: 1]
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
 
-    btn.addEventListener('click', () => {
-      const text = document.getElementById('storyBox').value;
-      if(!text) return;
-
-      btn.innerHTML = "Orchestrating Agents...";
-      status.style.color = "#8a2be2";
-      status.innerText = "Agentic Processing...";
-      
-      setTimeout(() => {
-        output.innerText = "> Payload delivered to n8n. Workflow active.";
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Generate Test Suite`;
-        status.style.color = "#0066ff";
-        status.innerText = "Execution Successful";
-      }, 2000);
-    });
+    // Scroll Reveal Logic Restored[cite: 1]
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
   </script>
 </body>
 </html>
