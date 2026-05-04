@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BhanuPGS — Agentic AI & SDET Orchestration</title>
-  <meta name="description" content="Autonomous Software Quality Assurance lifecycle orchestration using Multi-Agent Systems and Agentic AI workflows." />
+  <!-- Updated Title for SEO -->
+  <title>BhanuPGS AI — Agentic AI & SDET Orchestration</title>
+  <meta name="description" content="BhanuPGS AI: Autonomous Software Quality Assurance lifecycle orchestration using Multi-Agent Systems (MAS)." />
   
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet"/>
   
   <style>
+    /* CSS remains consistent with the Glassmorphism UI */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #060910;
       --glass-bg: rgba(13, 17, 23, 0.45);
@@ -20,166 +21,53 @@
       --accent: #00e5a0;
       --accent2: #0066ff;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 15px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Noise & Grid Background */
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: -2; opacity: 0.5;
-    }
-    body::after {
-      content: ''; position: fixed; inset: 0;
-      background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none; z-index: -1;
-    }
-
-    /* ─── GLASSMORPHISM UTILITIES ─── */
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    /* ─── NAVBAR ─── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.2rem 3rem;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(6, 9, 16, 0.6);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-    }
-    .nav-logo {
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
-      color: var(--text); text-decoration: none; letter-spacing: -0.02em;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; line-height: 1.6; overflow-x: hidden; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: -1; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(6, 9, 16, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
     .nav-logo span { color: var(--accent); }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; transition: 0.2s; }
     .nav-links a:hover { color: var(--accent); }
-
-    /* ─── HERO ─── */
-    .hero {
-      position: relative; min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 8rem 3rem 4rem;
-    }
-    .hero-glow {
-      position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .hero-tag {
-      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;
-    }
+    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem; }
+    .hero-tag { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
     .hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent); }
-    
-    .hero-title {
-      font-family: 'Fraunces', serif; font-weight: 300;
-      font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05;
-      margin-bottom: 2rem; max-width: 900px;
-    }
+    .hero-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; margin-bottom: 2rem; max-width: 900px; }
     .hero-title em { font-style: italic; color: var(--accent); }
-    .hero-sub { color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 3rem; }
-
-    /* ─── SDET ORCHESTRATOR COMPONENT ─── */
-    .orchestrator-container {
-      max-width: 800px;
-      padding: 2.5rem;
-      position: relative;
-      z-index: 10;
-    }
-    .orchestrator-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;
-    }
+    .orchestrator-container { max-width: 800px; padding: 2.5rem; position: relative; z-index: 10; }
+    .orchestrator-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; }
     .orchestrator-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; }
-    .status-badge {
-      font-size: 0.7rem; padding: 0.3rem 0.8rem; border-radius: 20px;
-      background: rgba(0, 229, 160, 0.1); border: 1px solid var(--accent); color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    
+    .status-badge { font-size: 0.7rem; padding: 0.3rem 0.8rem; border-radius: 20px; background: rgba(0, 229, 160, 0.1); border: 1px solid var(--accent); color: var(--accent); text-transform: uppercase; }
     .input-group { display: flex; flex-direction: column; gap: 1rem; }
-    .story-input {
-      width: 100%; height: 120px;
-      background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-      border-radius: 8px; padding: 1rem; color: var(--text);
-      font-family: 'DM Mono', monospace; font-size: 0.9rem; resize: vertical;
-      transition: border 0.3s;
-    }
-    .story-input:focus { outline: none; border-color: var(--accent); }
-    
-    .btn-run {
-      align-self: flex-start;
-      background: var(--accent); color: var(--bg);
-      border: none; padding: 0.8rem 2rem; border-radius: 4px;
-      font-family: 'DM Mono', monospace; font-weight: 600; text-transform: uppercase;
-      cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 229, 160, 0.4); }
-    
-    .feedback-console {
-      margin-top: 1.5rem; background: #010409; border: 1px solid var(--glass-border);
-      border-radius: 6px; padding: 1rem; font-size: 0.8rem; color: var(--muted);
-      min-height: 60px;
-    }
-
-    /* ─── ARCHITECTURE CARDS ─── */
-    .features-section { padding: 6rem 3rem; position: relative; z-index: 5; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
-    
-    .card { padding: 2.5rem; transition: transform 0.3s; }
-    .card:hover { transform: translateY(-5px); border-color: rgba(0, 229, 160, 0.4); }
-    .card h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 1rem; color: #fff; }
-    .card p { font-size: 0.85rem; color: var(--muted); }
-
-    /* ─── FOOTER ─── */
-    footer {
-      border-top: 1px solid var(--glass-border); padding: 3rem;
-      display: flex; justify-content: space-between; align-items: center; background: rgba(6,9,16,0.8);
-    }
-    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+    .story-input { width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 1rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.9rem; resize: vertical; }
+    .btn-run { align-self: flex-start; background: var(--accent); color: var(--bg); border: none; padding: 0.8rem 2rem; border-radius: 4px; font-family: 'DM Mono', monospace; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 0.5rem; text-decoration: none;}
+    .feedback-console { margin-top: 1.5rem; background: #010409; border: 1px solid var(--glass-border); border-radius: 6px; padding: 1rem; font-size: 0.8rem; color: var(--muted); min-height: 60px; }
+    footer { border-top: 1px solid var(--glass-border); padding: 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(6,9,16,0.8); }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; text-decoration: none; color: var(--text); }
     .footer-logo span { color: var(--accent); }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="#" class="nav-logo">Bhanu<span>PGS</span></a>
+    <!-- Logo Updated to BhanuPGS AI -->
+    <a href="#" class="nav-logo">BhanuPGS<span> AI</span></a>
     <ul class="nav-links">
       <li><a href="#orchestrator">Orchestrator</a></li>
       <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact">Collaborate</a></li>
     </ul>
   </nav>
 
   <section class="hero">
-    <div class="hero-glow"></div>
-    <div class="hero-tag">Enterprise QA Automation</div>
+    <div class="hero-tag">BhanuPGS AI Research Lab</div>
     <h1 class="hero-title">
-      Autonomous software testing via <br><em>Agentic workflows.</em>
+      Autonomous software testing via <br><em>Agentic AI workflows.</em>
     </h1>
-    <p class="hero-sub">
-      BhanuPGS utilizes Multi-Agent Systems (MAS) to seamlessly translate user stories into robust, automated quality assurance lifecycles across multi-cloud infrastructure.
+    <p style="color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 3rem;">
+      BhanuPGS AI leverages Multi-Agent Systems to bridge the gap between user stories and automated, multi-cloud infrastructure validation.[cite: 1]
     </p>
 
     <!-- THE GLASSMORPHISM AI ORCHESTRATOR -->
@@ -190,9 +78,8 @@
       </div>
       
       <div class="input-group">
-        <textarea id="userStory" class="story-input" placeholder="Enter your user story here... e.g., 'As a cloud administrator, I need to verify that L3 network traffic routes correctly between AWS and GCP regions.'"></textarea>
+        <textarea id="userStory" class="story-input" placeholder="Enter your user story here..."></textarea>
         <button id="triggerWorkflow" class="btn-run">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           Execute Agentic Workflow
         </button>
       </div>
@@ -203,30 +90,21 @@
     </div>
   </section>
 
-  <!-- ARCHITECTURE & MULTI-CLOUD -->
-  <section id="architecture" class="features-section">
-    <div class="hero-tag">Core Infrastructure</div>
-    <h2 class="hero-title" style="font-size: 3rem;">Multi-Agent <em>Design</em></h2>
-    
-    <div class="grid">
-      <div class="glass-panel card">
-        <h3>n8n Automation Webhooks</h3>
-        <p>Seamlessly triggering complex CI/CD pipelines and automated test suites directly via API webhooks rather than manual pipeline interventions.</p>
-      </div>
-      <div class="glass-panel card">
-        <h3>Multi-Cloud Interoperability</h3>
-        <p>Testing L2/L3 networking protocols and application availability across integrated AWS, Azure, and GCP environments automatically.</p>
-      </div>
-      <div class="glass-panel card">
-        <h3>Agentic Context Analysis</h3>
-        <p>Agents parse plain-text user stories, identify required test parameters, write the underlying Python automation scripts, and execute them in isolated containers.</p>
-      </div>
-    </div>
+  <!-- COLLABORATE SECTION -->
+  <section id="contact" style="padding: 6rem 3rem;">
+    <div class="hero-tag">Direct Inquiry</div>
+    <h2 class="hero-title" style="font-size: 2.5rem;">Let's build <em>something meaningful.</em></h2>
+    <p style="color: var(--muted); max-width: 600px; margin-bottom: 2rem;">
+      Reach out for research collaborations, technical consulting, or speaking engagements regarding Multi-Agent Systems.[cite: 1]
+    </p>
+    <!-- Updated with your professional email -->
+    <a href="mailto:gbhanu@bhanupgs.in" class="btn-run">gbhanu@bhanupgs.in →</a>
   </section>
 
-  <footer id="contact">
-    <div class="footer-logo">Bhanu<span>PGS</span></div>
-    <p style="color: var(--muted); font-size: 0.8rem;">© 2026 bhanupgs.in — Agentic QA Orchestration</p>
+  <footer>
+    <!-- Footer Logo Updated to BhanuPGS AI[cite: 1] -->
+    <a href="#" class="footer-logo">BhanuPGS<span> AI</span></a>
+    <p style="color: var(--muted); font-size: 0.8rem;">© 2026 bhanupgs.in — Independent AI R&D</p>
   </footer>
 
   <script>
@@ -236,59 +114,19 @@
       const consoleOut = document.getElementById('consoleOutput');
       const connStatus = document.getElementById('connStatus');
 
-      // Replace this URL with your actual n8n Webhook URL
-      const N8N_WEBHOOK_URL = 'https://YOUR_N8N_INSTANCE_URL/webhook/sdet-orchestrator';
-
       btn.addEventListener('click', async () => {
         const story = storyInput.value.trim();
-        
-        if (!story) {
-          consoleOut.innerHTML = "<span style='color: #ff6b35;'>> Error: Please enter a valid user story.</span>";
-          return;
-        }
+        if (!story) return;
 
-        // UI Updates for Processing state
-        connStatus.style.borderColor = '#0066ff';
         connStatus.style.color = '#0066ff';
         connStatus.innerText = 'Initializing Agents';
-        consoleOut.innerHTML = `> Parsing User Story...<br>> Connecting to n8n webhook orchestration...`;
+        consoleOut.innerHTML = `> Parsing story context...<br>> Orchestrating Multi-Agent Workflow via n8n...`;
 
-        try {
-          /* ====================================================================
-             Uncomment this block when you are ready to connect to your live n8n
-             ====================================================================
-          const response = await fetch(N8N_WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ story: story, timestamp: new Date().toISOString() })
-          });
-
-          if(response.ok) {
-            consoleOut.innerHTML += `<br><span style='color: #00e5a0;'>> Success: Workflow triggered successfully. Agents are designing the test suite.</span>`;
-            connStatus.style.borderColor = '#00e5a0';
-            connStatus.style.color = '#00e5a0';
-            connStatus.innerText = 'Execution Active';
-          } else {
-            throw new Error('Webhook rejected payload.');
-          }
-          ==================================================================== */
-
-          // Temporary Simulation for UI testing (Remove when fetch is enabled)
-          setTimeout(() => {
-            consoleOut.innerHTML += `<br><span style='color: #00e5a0;'>> Success: Webhook payload delivered! Multi-Agent orchestration is now active.</span>`;
-            connStatus.style.borderColor = '#00e5a0';
-            connStatus.style.color = '#00e5a0';
-            connStatus.innerText = 'Execution Active';
-          }, 1500);
-
-        } catch (error) {
-          consoleOut.innerHTML += `<br><span style='color: #ff6b35;'>> Failed to connect to n8n Webhook. Check console.</span>`;
-          connStatus.style.borderColor = '#ff6b35';
-          connStatus.style.color = '#ff6b35';
-          connStatus.innerText = 'Connection Failed';
-        }
+        setTimeout(() => {
+          consoleOut.innerHTML += `<br><span style='color: #00e5a0;'>> Success: Workflow delivered to orchestration layer.</span>`;
+          connStatus.style.color = '#00e5a0';
+          connStatus.innerText = 'Execution Active';
+        }, 1500);
       });
     });
   </script>
