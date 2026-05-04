@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BhanuPGS — AI Research & Development</title>
+  <title>BhanuPGS — Agentic AI & SDET Orchestration</title>
+  <meta name="description" content="Autonomous Software Quality Assurance lifecycle orchestration using Multi-Agent Systems and Agentic AI workflows." />
+  
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet"/>
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #060910;
-      --surface: #0d1117;
-      --border: rgba(255,255,255,0.07);
+      --glass-bg: rgba(13, 17, 23, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.1);
       --text: #e8eaf0;
-      --muted: #6b7280;
+      --muted: #8b949e;
       --accent: #00e5a0;
       --accent2: #0066ff;
-      --accent3: #ff6b35;
-      --glow: rgba(0, 229, 160, 0.15);
     }
 
     html { scroll-behavior: smooth; }
@@ -29,1073 +30,267 @@
       font-size: 15px;
       line-height: 1.6;
       overflow-x: hidden;
-      cursor: none;
     }
 
-    /* Custom cursor */
-    .cursor {
-      position: fixed;
-      width: 10px; height: 10px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s, width 0.2s, height 0.2s;
-      mix-blend-mode: screen;
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(0,229,160,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
-    }
-
-    /* Noise overlay */
+    /* Noise & Grid Background */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
+      pointer-events: none; z-index: -2; opacity: 0.5;
+    }
+    body::after {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: -1;
     }
 
-    /* Grid background */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
+    /* ─── GLASSMORPHISM UTILITIES ─── */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
     }
 
     /* ─── NAVBAR ─── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 1.2rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(6, 9, 16, 0.6);
       backdrop-filter: blur(20px);
-      background: rgba(6,9,16,0.7);
+      border-bottom: 1px solid var(--glass-border);
     }
-
     .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+      color: var(--text); text-decoration: none; letter-spacing: -0.02em;
     }
     .nav-logo span { color: var(--accent); }
-
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; transition: 0.2s; }
     .nav-links a:hover { color: var(--accent); }
-
-    .nav-cta {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 0.5rem 1.3rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      cursor: none;
-      text-transform: uppercase;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-cta:hover { background: var(--accent); color: var(--bg); }
 
     /* ─── HERO ─── */
     .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
       padding: 8rem 3rem 4rem;
-      z-index: 1;
-      overflow: hidden;
     }
-
-    /* Radial glow */
     .hero-glow {
-      position: absolute;
-      top: 30%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(0,229,160,0.08) 0%, transparent 70%);
+      position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 60%);
       pointer-events: none;
-      animation: pulseGlow 6s ease-in-out infinite;
     }
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-    }
-
     .hero-tag {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.1s forwards;
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem;
     }
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 32px; height: 1px;
-      background: var(--accent);
-    }
-
+    .hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent); }
+    
     .hero-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 300;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 2rem;
-      max-width: 900px;
+      font-family: 'Fraunces', serif; font-weight: 300;
+      font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05;
+      margin-bottom: 2rem; max-width: 900px;
     }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-sub { color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 3rem; }
 
-    .hero-title .line {
-      display: block;
-      overflow: hidden;
-    }
-    .hero-title .line-inner {
-      display: block;
-      opacity: 0;
-      transform: translateY(100%);
-      animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-    .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.3s; }
-    .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.45s; }
-    .hero-title .line:nth-child(3) .line-inner { animation-delay: 0.6s; }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: 0.9rem;
-      color: var(--muted);
-      max-width: 500px;
-      line-height: 1.8;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.9s forwards;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 1.1s forwards;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      padding: 0.9rem 2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,229,160,0.3);
-    }
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 0.9rem 2rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 1.4s forwards;
-    }
-    .scroll-line {
-      width: 48px; height: 1px;
-      background: var(--muted);
-      position: relative;
-      overflow: hidden;
-    }
-    .scroll-line::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: var(--accent);
-      animation: scrollLine 2s ease-in-out 1.8s infinite;
-    }
-    @keyframes scrollLine {
-      0% { left: -100%; }
-      50% { left: 0%; }
-      100% { left: 100%; }
-    }
-
-    /* Floating stat cards */
-    .hero-stats {
-      position: absolute;
-      right: 3rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      opacity: 0;
-      animation: fadeLeft 0.8s ease 1.2s forwards;
-    }
-    @keyframes fadeLeft {
-      from { opacity: 0; transform: translateY(-50%) translateX(30px); }
-      to { opacity: 1; transform: translateY(-50%) translateX(0); }
-    }
-
-    .stat-card {
-      border: 1px solid var(--border);
-      background: rgba(13,17,23,0.8);
-      backdrop-filter: blur(10px);
-      padding: 1.2rem 1.5rem;
-      min-width: 160px;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .stat-card:hover { border-color: var(--accent); transform: translateX(-4px); }
-    .stat-number {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 0.3rem;
-    }
-
-    /* ─── MARQUEE ─── */
-    .marquee-wrap {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: rgba(0,229,160,0.03);
-      overflow: hidden;
-      padding: 1rem 0;
-    }
-    .marquee-track {
-      display: flex;
-      gap: 3rem;
-      white-space: nowrap;
-      animation: marquee 25s linear infinite;
-    }
-    .marquee-item {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-shrink: 0;
-    }
-    .marquee-item span { color: var(--accent); }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    /* ─── SECTION COMMON ─── */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 7rem 3rem;
-    }
-
-    .section-tag {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    .section-tag::before {
-      content: '';
-      display: block;
-      width: 24px; height: 1px;
-      background: var(--accent);
-    }
-
-    .section-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 300;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-    .section-title em { font-style: italic; color: var(--accent); }
-
-    /* ─── RESEARCH / FOCUS AREAS ─── */
-    .areas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      margin-top: 4rem;
-    }
-    .area-card {
-      background: var(--bg);
+    /* ─── SDET ORCHESTRATOR COMPONENT ─── */
+    .orchestrator-container {
+      max-width: 800px;
       padding: 2.5rem;
       position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
+      z-index: 10;
     }
-    .area-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 0;
-      background: var(--accent);
-      transition: height 0.4s ease;
+    .orchestrator-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;
     }
-    .area-card:hover { background: var(--surface); }
-    .area-card:hover::before { height: 100%; }
-
-    .area-num {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
+    .orchestrator-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; }
+    .status-badge {
+      font-size: 0.7rem; padding: 0.3rem 0.8rem; border-radius: 20px;
+      background: rgba(0, 229, 160, 0.1); border: 1px solid var(--accent); color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.05em;
     }
-    .area-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
+    
+    .input-group { display: flex; flex-direction: column; gap: 1rem; }
+    .story-input {
+      width: 100%; height: 120px;
+      background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+      border-radius: 8px; padding: 1rem; color: var(--text);
+      font-family: 'DM Mono', monospace; font-size: 0.9rem; resize: vertical;
+      transition: border 0.3s;
     }
-    .area-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.8rem;
-      letter-spacing: -0.01em;
+    .story-input:focus { outline: none; border-color: var(--accent); }
+    
+    .btn-run {
+      align-self: flex-start;
+      background: var(--accent); color: var(--bg);
+      border: none; padding: 0.8rem 2rem; border-radius: 4px;
+      font-family: 'DM Mono', monospace; font-weight: 600; text-transform: uppercase;
+      cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 0.5rem;
     }
-    .area-desc {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* ─── PROJECTS ─── */
-    .projects-section { background: var(--surface); }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 4rem;
+    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 229, 160, 0.4); }
+    
+    .feedback-console {
+      margin-top: 1.5rem; background: #010409; border: 1px solid var(--glass-border);
+      border-radius: 6px; padding: 1rem; font-size: 0.8rem; color: var(--muted);
+      min-height: 60px;
     }
 
-    .project-card {
-      border: 1px solid var(--border);
-      padding: 2rem 2.5rem;
-      position: relative;
-      overflow: hidden;
-      cursor: none;
-      transition: border-color 0.3s, transform 0.3s;
-      text-decoration: none;
-      display: block;
-      color: var(--text);
-    }
-    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-
-    .project-card.featured {
-      grid-column: span 2;
-      background: linear-gradient(135deg, rgba(0,229,160,0.05), transparent);
-    }
-
-    .project-status {
-      display: inline-block;
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-    }
-    .project-status.ongoing { border-color: var(--accent2); color: var(--accent2); }
-    .project-status.concept { border-color: var(--accent3); color: var(--accent3); }
-
-    .project-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 0.8rem;
-      letter-spacing: -0.01em;
-    }
-    .project-desc {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .project-tag {
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-    .project-arrow {
-      position: absolute;
-      top: 2rem; right: 2rem;
-      font-size: 1.2rem;
-      color: var(--muted);
-      transition: color 0.3s, transform 0.3s;
-    }
-    .project-card:hover .project-arrow { color: var(--accent); transform: translate(4px, -4px); }
-
-    /* ─── ABOUT ─── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-      margin-top: 4rem;
-    }
-
-    .about-visual {
-      position: relative;
-      height: 380px;
-    }
-    .about-frame {
-      position: absolute;
-      inset: 0;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      overflow: hidden;
-    }
-
-    /* Animated neural net SVG */
-    .neural-svg {
-      width: 100%; height: 100%;
-      opacity: 0.6;
-    }
-
-    .about-text h3 {
-      font-family: 'Fraunces', serif;
-      font-weight: 300;
-      font-size: 1.8rem;
-      line-height: 1.3;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.02em;
-    }
-    .about-text h3 em { font-style: italic; color: var(--accent); }
-
-    .about-text p {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 1rem;
-    }
-
-    .about-skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-    }
-    .skill-pill {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.8rem;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ─── BLOG TEASERS ─── */
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 4rem;
-    }
-    .blog-card {
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-      cursor: none;
-    }
-    .blog-date {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.8rem;
-    }
-    .blog-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 1rem;
-      line-height: 1.4;
-      margin-bottom: 0.8rem;
-      transition: color 0.2s;
-    }
-    .blog-card:hover .blog-title { color: var(--accent); }
-    .blog-excerpt {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .blog-read {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: 1rem;
-      text-decoration: none;
-    }
-
-    /* ─── COLLABORATE ─── */
-    .collab-section {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-    }
-    .collab-inner {
-      max-width: 700px;
-    }
-    .collab-section .section-title { font-size: clamp(2rem, 5vw, 4rem); }
-    .collab-section p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-top: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-    .collab-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 3rem;
-    }
-    .collab-option {
-      border: 1px solid var(--border);
-      padding: 1.2rem 1.5rem;
-      flex: 1;
-      min-width: 180px;
-      transition: border-color 0.3s;
-    }
-    .collab-option:hover { border-color: var(--accent); }
-    .collab-option-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
-    .collab-option-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 0.3rem;
-    }
-    .collab-option-desc { font-size: 0.72rem; color: var(--muted); }
+    /* ─── ARCHITECTURE CARDS ─── */
+    .features-section { padding: 6rem 3rem; position: relative; z-index: 5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    
+    .card { padding: 2.5rem; transition: transform 0.3s; }
+    .card:hover { transform: translateY(-5px); border-color: rgba(0, 229, 160, 0.4); }
+    .card h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; margin-bottom: 1rem; color: #fff; }
+    .card p { font-size: 0.85rem; color: var(--muted); }
 
     /* ─── FOOTER ─── */
     footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
+      border-top: 1px solid var(--glass-border); padding: 3rem;
+      display: flex; justify-content: space-between; align-items: center; background: rgba(6,9,16,0.8);
     }
-    .footer-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--text);
-    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
     .footer-logo span { color: var(--accent); }
-    footer p { font-size: 0.72rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 2rem; }
-    .footer-links a {
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--accent); }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(100%); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { display: none; }
-      .hero { padding: 7rem 1.5rem 4rem; }
-      .hero-stats { display: none; }
-      section { padding: 5rem 1.5rem; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card.featured { grid-column: span 1; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .blog-grid { grid-template-columns: 1fr; }
-      footer { padding: 2rem 1.5rem; }
-    }
   </style>
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
-
-  <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">Bhanu<span>PGS</span></a>
     <ul class="nav-links">
-      <li><a href="#research">Research</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#blog">Insights</a></li>
-      <li><a href="#collaborate">Collaborate</a></li>
+      <li><a href="#orchestrator">Orchestrator</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
-    <button class="nav-cta">Get in Touch</button>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-glow"></div>
-
-    <div class="hero-tag">Independent AI Research Lab</div>
-
+    <div class="hero-tag">Enterprise QA Automation</div>
     <h1 class="hero-title">
-      <span class="line"><span class="line-inner">Building the</span></span>
-      <span class="line"><span class="line-inner">next frontier of</span></span>
-      <span class="line"><span class="line-inner"><em>intelligent</em> systems.</span></span>
+      Autonomous software testing via <br><em>Agentic workflows.</em>
     </h1>
-
     <p class="hero-sub">
-      Independent research at the intersection of machine learning, cognitive systems, and applied AI — translating curiosity into tools that matter.
+      BhanuPGS utilizes Multi-Agent Systems (MAS) to seamlessly translate user stories into robust, automated quality assurance lifecycles across multi-cloud infrastructure.
     </p>
 
-    <div class="hero-actions">
-      <a href="#projects" class="btn-primary">View Research →</a>
-      <a href="#collaborate" class="btn-secondary">Collaborate</a>
-    </div>
-
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      Scroll to explore
-    </div>
-
-    <div class="hero-stats">
-      <div class="stat-card">
-        <div class="stat-number">12+</div>
-        <div class="stat-label">Research Papers</div>
+    <!-- THE GLASSMORPHISM AI ORCHESTRATOR -->
+    <div id="orchestrator" class="glass-panel orchestrator-container">
+      <div class="orchestrator-header">
+        <div class="orchestrator-title">SDET Story Orchestrator</div>
+        <div class="status-badge" id="connStatus">System Ready</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-number">5</div>
-        <div class="stat-label">Active Projects</div>
+      
+      <div class="input-group">
+        <textarea id="userStory" class="story-input" placeholder="Enter your user story here... e.g., 'As a cloud administrator, I need to verify that L3 network traffic routes correctly between AWS and GCP regions.'"></textarea>
+        <button id="triggerWorkflow" class="btn-run">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Execute Agentic Workflow
+        </button>
       </div>
-      <div class="stat-card">
-        <div class="stat-number">3</div>
-        <div class="stat-label">Focus Domains</div>
+
+      <div class="feedback-console" id="consoleOutput">
+        > Awaiting user story input...
       </div>
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <div class="marquee-item"><span>✦</span> Large Language Models</div>
-      <div class="marquee-item"><span>✦</span> Reinforcement Learning</div>
-      <div class="marquee-item"><span>✦</span> AI Safety</div>
-      <div class="marquee-item"><span>✦</span> Neural Architecture</div>
-      <div class="marquee-item"><span>✦</span> Applied ML</div>
-      <div class="marquee-item"><span>✦</span> Cognitive AI</div>
-      <div class="marquee-item"><span>✦</span> Autonomous Agents</div>
-      <div class="marquee-item"><span>✦</span> bhanupgs.in</div>
-      <!-- duplicate for seamless loop -->
-      <div class="marquee-item"><span>✦</span> Large Language Models</div>
-      <div class="marquee-item"><span>✦</span> Reinforcement Learning</div>
-      <div class="marquee-item"><span>✦</span> AI Safety</div>
-      <div class="marquee-item"><span>✦</span> Neural Architecture</div>
-      <div class="marquee-item"><span>✦</span> Applied ML</div>
-      <div class="marquee-item"><span>✦</span> Cognitive AI</div>
-      <div class="marquee-item"><span>✦</span> Autonomous Agents</div>
-      <div class="marquee-item"><span>✦</span> bhanupgs.in</div>
-    </div>
-  </div>
-
-  <!-- RESEARCH AREAS -->
-  <section id="research">
-    <div class="section-tag reveal">Focus Areas</div>
-    <h2 class="section-title reveal">Research that<br><em>moves fast</em></h2>
-    <div class="areas-grid">
-      <div class="area-card reveal">
-        <div class="area-num">01</div>
-        <span class="area-icon">🧠</span>
-        <div class="area-name">Cognitive AI Systems</div>
-        <p class="area-desc">Designing architectures that mirror human-like reasoning — memory, abstraction, and generalisation across novel tasks.</p>
+  <!-- ARCHITECTURE & MULTI-CLOUD -->
+  <section id="architecture" class="features-section">
+    <div class="hero-tag">Core Infrastructure</div>
+    <h2 class="hero-title" style="font-size: 3rem;">Multi-Agent <em>Design</em></h2>
+    
+    <div class="grid">
+      <div class="glass-panel card">
+        <h3>n8n Automation Webhooks</h3>
+        <p>Seamlessly triggering complex CI/CD pipelines and automated test suites directly via API webhooks rather than manual pipeline interventions.</p>
       </div>
-      <div class="area-card reveal">
-        <div class="area-num">02</div>
-        <span class="area-icon">⚡</span>
-        <div class="area-name">Efficient Learning</div>
-        <p class="area-desc">Reducing the computational and data cost of intelligence. Sparse models, meta-learning, and few-shot generalisation.</p>
+      <div class="glass-panel card">
+        <h3>Multi-Cloud Interoperability</h3>
+        <p>Testing L2/L3 networking protocols and application availability across integrated AWS, Azure, and GCP environments automatically.</p>
       </div>
-      <div class="area-card reveal">
-        <div class="area-num">03</div>
-        <span class="area-icon">🔬</span>
-        <div class="area-name">Applied AI Research</div>
-        <p class="area-desc">Bringing research-grade models to real-world applications in healthcare, education, and scientific discovery.</p>
-      </div>
-      <div class="area-card reveal">
-        <div class="area-num">04</div>
-        <span class="area-icon">🛡️</span>
-        <div class="area-name">AI Safety & Alignment</div>
-        <p class="area-desc">Studying interpretability, robustness, and value alignment to ensure AI systems behave as intended.</p>
+      <div class="glass-panel card">
+        <h3>Agentic Context Analysis</h3>
+        <p>Agents parse plain-text user stories, identify required test parameters, write the underlying Python automation scripts, and execute them in isolated containers.</p>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="projects-section">
-    <div class="section-tag reveal">Work</div>
-    <h2 class="section-title reveal">Selected <em>projects</em></h2>
-    <div class="projects-grid">
-      <a class="project-card featured reveal" href="#">
-        <div class="project-arrow">↗</div>
-        <div class="project-status">Active</div>
-        <div class="project-title">Contextual Memory in Transformer Agents</div>
-        <p class="project-desc">Investigating how transformers form and retrieve episodic-like memories during multi-step reasoning tasks — towards agents that learn from experience, not just training data.</p>
-        <div class="project-tags">
-          <span class="project-tag">LLM</span>
-          <span class="project-tag">Agents</span>
-          <span class="project-tag">Transformers</span>
-          <span class="project-tag">Memory</span>
-        </div>
-      </a>
-      <a class="project-card reveal" href="#">
-        <div class="project-arrow">↗</div>
-        <div class="project-status ongoing">Ongoing</div>
-        <div class="project-title">Sparse Reward RL for Real-World Tasks</div>
-        <p class="project-desc">Exploring curriculum learning techniques to train RL agents effectively in environments with minimal feedback signals.</p>
-        <div class="project-tags">
-          <span class="project-tag">RL</span>
-          <span class="project-tag">Curriculum</span>
-        </div>
-      </a>
-      <a class="project-card reveal" href="#">
-        <div class="project-arrow">↗</div>
-        <div class="project-status concept">Concept</div>
-        <div class="project-title">Low-Resource NLP for Indian Languages</div>
-        <p class="project-desc">Building multilingual models that understand Kannada, Telugu, and Hindi without massive annotated corpora.</p>
-        <div class="project-tags">
-          <span class="project-tag">NLP</span>
-          <span class="project-tag">Multilingual</span>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-grid">
-      <div class="about-visual reveal">
-        <div class="about-frame">
-          <!-- Animated neural network visualization -->
-          <svg class="neural-svg" viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#00e5a0" stop-opacity="0.8"/>
-                <stop offset="100%" stop-color="#00e5a0" stop-opacity="0.2"/>
-              </radialGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <!-- Connections -->
-            <g stroke="rgba(0,229,160,0.12)" stroke-width="1">
-              <!-- Layer 1 → 2 -->
-              <line x1="80" y1="80" x2="200" y2="60"/><line x1="80" y1="80" x2="200" y2="130"/>
-              <line x1="80" y1="160" x2="200" y2="60"/><line x1="80" y1="160" x2="200" y2="130"/><line x1="80" y1="160" x2="200" y2="200"/>
-              <line x1="80" y1="240" x2="200" y2="130"/><line x1="80" y1="240" x2="200" y2="200"/><line x1="80" y1="240" x2="200" y2="270"/>
-              <line x1="80" y1="320" x2="200" y2="200"/><line x1="80" y1="320" x2="200" y2="270"/>
-              <!-- Layer 2 → 3 -->
-              <line x1="200" y1="60" x2="320" y2="100"/><line x1="200" y1="60" x2="320" y2="190"/>
-              <line x1="200" y1="130" x2="320" y2="100"/><line x1="200" y1="130" x2="320" y2="190"/>
-              <line x1="200" y1="200" x2="320" y2="100"/><line x1="200" y1="200" x2="320" y2="190"/><line x1="200" y1="200" x2="320" y2="280"/>
-              <line x1="200" y1="270" x2="320" y2="190"/><line x1="200" y1="270" x2="320" y2="280"/>
-            </g>
-            <!-- Animated signal pulses -->
-            <g fill="var(--accent)" filter="url(#glow)">
-              <circle r="3" opacity="0">
-                <animateMotion dur="2s" repeatCount="indefinite" begin="0s">
-                  <mpath href="#path1"/>
-                </animateMotion>
-                <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
-              </circle>
-              <circle r="3" opacity="0">
-                <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.8s">
-                  <mpath href="#path2"/>
-                </animateMotion>
-                <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="0.8s"/>
-              </circle>
-              <circle r="3" opacity="0">
-                <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.5s">
-                  <mpath href="#path3"/>
-                </animateMotion>
-                <animate attributeName="opacity" values="0;1;1;0" dur="1.8s" repeatCount="indefinite" begin="1.5s"/>
-              </circle>
-            </g>
-            <defs>
-              <path id="path1" d="M80,160 L200,130 L320,190"/>
-              <path id="path2" d="M80,240 L200,200 L320,100"/>
-              <path id="path3" d="M80,80 L200,60 L320,190"/>
-            </defs>
-            <!-- Nodes layer 1 -->
-            <g fill="url(#nodeGrad)" filter="url(#glow)">
-              <circle cx="80" cy="80" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" begin="0s"/></circle>
-              <circle cx="80" cy="160" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" begin="0.5s"/></circle>
-              <circle cx="80" cy="240" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" begin="1s"/></circle>
-              <circle cx="80" cy="320" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" begin="1.5s"/></circle>
-            </g>
-            <!-- Nodes layer 2 -->
-            <g fill="url(#nodeGrad)" filter="url(#glow)">
-              <circle cx="200" cy="60" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="0.3s"/></circle>
-              <circle cx="200" cy="130" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="0.7s"/></circle>
-              <circle cx="200" cy="200" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="1.1s"/></circle>
-              <circle cx="200" cy="270" r="7"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="1.5s"/></circle>
-            </g>
-            <!-- Nodes layer 3 -->
-            <g fill="url(#nodeGrad)" filter="url(#glow)">
-              <circle cx="320" cy="100" r="9"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="0.6s"/></circle>
-              <circle cx="320" cy="190" r="9"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1.1s"/></circle>
-              <circle cx="320" cy="280" r="9"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1.6s"/></circle>
-            </g>
-            <!-- Labels -->
-            <g fill="rgba(107,114,128,0.6)" font-size="9" font-family="monospace" letter-spacing="1">
-              <text x="55" y="355">INPUT</text>
-              <text x="182" y="355">HIDDEN</text>
-              <text x="304" y="355">OUTPUT</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-
-      <div class="about-text reveal">
-        <div class="section-tag">About</div>
-        <h3>Independent researcher.<br><em>Building what's next.</em></h3>
-        <p>BhanuPGS is a one-person AI R&D lab based in Bengaluru, India — dedicated to independent, curiosity-driven research in artificial intelligence and machine learning.</p>
-        <p>The work here bridges theory and practice: from novel architectures and training techniques to real-world systems that solve meaningful problems.</p>
-        <div class="about-skills">
-          <span class="skill-pill">PyTorch</span>
-          <span class="skill-pill">Transformers</span>
-          <span class="skill-pill">RL</span>
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">JAX</span>
-          <span class="skill-pill">NLP</span>
-          <span class="skill-pill">MLOps</span>
-          <span class="skill-pill">CUDA</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BLOG -->
-  <section id="blog" style="background: var(--surface);">
-    <div class="section-tag reveal">Insights</div>
-    <h2 class="section-title reveal">Latest <em>writings</em></h2>
-    <div class="blog-grid">
-      <div class="blog-card reveal">
-        <div class="blog-date">April 2025</div>
-        <div class="blog-title">Why Sparse Attention Isn't Enough: Rethinking Sequence Compression</div>
-        <p class="blog-excerpt">A deep dive into the limits of current efficient attention mechanisms and what a better alternative might look like.</p>
-        <a class="blog-read" href="#">Read more →</a>
-      </div>
-      <div class="blog-card reveal">
-        <div class="blog-date">March 2025</div>
-        <div class="blog-title">Building a Personal Research Stack with Open-Source LLMs</div>
-        <p class="blog-excerpt">How I set up a local inference stack for rapid prototyping without burning through cloud credits.</p>
-        <a class="blog-read" href="#">Read more →</a>
-      </div>
-      <div class="blog-card reveal">
-        <div class="blog-date">February 2025</div>
-        <div class="blog-title">The Alignment Problem is Also a Measurement Problem</div>
-        <p class="blog-excerpt">We can't align what we can't measure. Exploring better evaluation frameworks for aligned behaviour.</p>
-        <a class="blog-read" href="#">Read more →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- COLLABORATE -->
-  <section id="collaborate" class="collab-section">
-    <div class="collab-inner">
-      <div class="section-tag reveal">Collaborate</div>
-      <h2 class="section-title reveal">Let's build<br><em>something meaningful.</em></h2>
-      <p class="reveal">Open to research collaborations, consulting engagements, and conversations with curious minds. If you're working on hard problems in AI, reach out.</p>
-      <div class="collab-options reveal">
-        <div class="collab-option">
-          <div class="collab-option-icon">🤝</div>
-          <div class="collab-option-name">Research Collab</div>
-          <div class="collab-option-desc">Joint papers & experiments</div>
-        </div>
-        <div class="collab-option">
-          <div class="collab-option-icon">💼</div>
-          <div class="collab-option-name">Consulting</div>
-          <div class="collab-option-desc">AI strategy & implementation</div>
-        </div>
-        <div class="collab-option">
-          <div class="collab-option-icon">📢</div>
-          <div class="collab-option-name">Speaking</div>
-          <div class="collab-option-desc">Talks, workshops & seminars</div>
-        </div>
-      </div>
-      <a href="mailto:hello@bhanupgs.in" class="btn-primary reveal">hello@bhanupgs.in →</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
+  <footer id="contact">
     <div class="footer-logo">Bhanu<span>PGS</span></div>
-    <p>© 2025 bhanupgs.in — Independent AI R&D</p>
-    <div class="footer-links">
-      <a href="#">GitHub</a>
-      <a href="#">LinkedIn</a>
-      <a href="#">Twitter / X</a>
-      <a href="#">Papers</a>
-    </div>
+    <p style="color: var(--muted); font-size: 0.8rem;">© 2026 bhanupgs.in — Agentic QA Orchestration</p>
   </footer>
 
   <script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    function animateCursor() {
-      cursor.style.left = mx + 'px';
-      cursor.style.top = my + 'px';
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    document.querySelectorAll('a,button,.area-card,.project-card,.stat-card,.collab-option,.blog-card').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.width = '18px';
-        cursor.style.height = '18px';
-        ring.style.width = '54px';
-        ring.style.height = '54px';
-        ring.style.borderColor = 'rgba(0,229,160,0.7)';
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.style.width = '10px';
-        cursor.style.height = '10px';
-        ring.style.width = '36px';
-        ring.style.height = '36px';
-        ring.style.borderColor = 'rgba(0,229,160,0.4)';
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('triggerWorkflow');
+      const storyInput = document.getElementById('userStory');
+      const consoleOut = document.getElementById('consoleOutput');
+      const connStatus = document.getElementById('connStatus');
+
+      // Replace this URL with your actual n8n Webhook URL
+      const N8N_WEBHOOK_URL = 'https://YOUR_N8N_INSTANCE_URL/webhook/sdet-orchestrator';
+
+      btn.addEventListener('click', async () => {
+        const story = storyInput.value.trim();
+        
+        if (!story) {
+          consoleOut.innerHTML = "<span style='color: #ff6b35;'>> Error: Please enter a valid user story.</span>";
+          return;
+        }
+
+        // UI Updates for Processing state
+        connStatus.style.borderColor = '#0066ff';
+        connStatus.style.color = '#0066ff';
+        connStatus.innerText = 'Initializing Agents';
+        consoleOut.innerHTML = `> Parsing User Story...<br>> Connecting to n8n webhook orchestration...`;
+
+        try {
+          /* ====================================================================
+             Uncomment this block when you are ready to connect to your live n8n
+             ====================================================================
+          const response = await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ story: story, timestamp: new Date().toISOString() })
+          });
+
+          if(response.ok) {
+            consoleOut.innerHTML += `<br><span style='color: #00e5a0;'>> Success: Workflow triggered successfully. Agents are designing the test suite.</span>`;
+            connStatus.style.borderColor = '#00e5a0';
+            connStatus.style.color = '#00e5a0';
+            connStatus.innerText = 'Execution Active';
+          } else {
+            throw new Error('Webhook rejected payload.');
+          }
+          ==================================================================== */
+
+          // Temporary Simulation for UI testing (Remove when fetch is enabled)
+          setTimeout(() => {
+            consoleOut.innerHTML += `<br><span style='color: #00e5a0;'>> Success: Webhook payload delivered! Multi-Agent orchestration is now active.</span>`;
+            connStatus.style.borderColor = '#00e5a0';
+            connStatus.style.color = '#00e5a0';
+            connStatus.innerText = 'Execution Active';
+          }, 1500);
+
+        } catch (error) {
+          consoleOut.innerHTML += `<br><span style='color: #ff6b35;'>> Failed to connect to n8n Webhook. Check console.</span>`;
+          connStatus.style.borderColor = '#ff6b35';
+          connStatus.style.color = '#ff6b35';
+          connStatus.innerText = 'Connection Failed';
+        }
       });
     });
-
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(el => io.observe(el));
   </script>
 </body>
 </html>
