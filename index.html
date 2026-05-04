@@ -6,7 +6,6 @@
   <title>BhanuPGS AI — Agentic AI Orchestrator</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet"/>
   <style>
-    /* ─── RESTORED ORIGINAL STYLES ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -15,9 +14,10 @@
       --border: rgba(255,255,255,0.07);
       --text: #e8eaf0;
       --muted: #6b7280;
-      --accent: #0066ff; /* Blue from screenshot */
-      --accent-green: #00e5a0;
-      --glow: rgba(0, 102, 255, 0.15);
+      --accent: #00e5a0; /* Green */
+      --accent2: #0066ff; /* Blue */
+      --accent3: #ff6b35; /* Orange - Subtle usage */
+      --glow: rgba(0, 229, 160, 0.15);
     }
 
     html { scroll-behavior: smooth; }
@@ -32,55 +32,61 @@
       cursor: none;
     }
 
-    /* Custom cursor restored */
+    /* Custom cursor logic */
     .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s; mix-blend-mode: screen; }
-    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(0,102,255,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s ease; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(0,229,160,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s ease; }
 
-    /* Noise and Grid overlay restored */
+    /* Noise & Grid Overlay */
     body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
-    body::after { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,102,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,102,255,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
 
-    /* NAVBAR restored with AI branding */
+    /* ─── NAVBAR ─── */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 3rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); backdrop-filter: blur(20px); background: rgba(6,9,16,0.7); }
     .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-brand { color: var(--text) !important; font-weight: 800 !important; border-left: 1px solid var(--border); padding-left: 1.5rem; }
+    .nav-logo span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.78rem; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent2); }
 
-    /* HERO SECTION with screenshot headlines */
+    /* ─── HERO ─── */
     .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 3rem 4rem; z-index: 1; }
-    .hero-glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,102,255,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero-glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,102,255,0.05) 0%, transparent 70%); pointer-events: none; }
     
-    .hero-tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: rgba(0, 102, 255, 0.1); padding: 0.4rem 1rem; border-radius: 20px; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; align-self: flex-start; border: 1px solid rgba(0, 102, 255, 0.2); }
-    .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-
+    .hero-tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); background: rgba(0, 102, 255, 0.1); padding: 0.4rem 1rem; border-radius: 20px; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; align-self: flex-start; border: 1px solid rgba(0, 102, 255, 0.2); }
+    
     .hero-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; margin-bottom: 2rem; max-width: 900px; }
-    .hero-title span { color: var(--accent); }
+    .hero-title span { color: var(--accent2); }
     
-    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 650px; line-height: 1.8; margin-bottom: 3rem; }
-    .hero-sub strong { color: #fff; font-weight: 600; }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 650px; line-height: 1.8; margin-bottom: 3.5rem; }
+    .hero-sub .agent-arch { color: var(--accent2); font-weight: 600; }
+    .hero-sub .agent-dev { color: var(--accent3); font-weight: 600; } /* Subtle Orange Usage */
 
-    /* INPUT CONSOLE integration */
-    .console-box { max-width: 700px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; margin-bottom: 4rem; backdrop-filter: blur(10px); }
+    /* ORCHESTRATOR CONSOLE */
+    .console-container { max-width: 750px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; backdrop-filter: blur(10px); }
     .console-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
     .dots { display: flex; gap: 6px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
-    .story-area { width: 100%; height: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; resize: none; }
-    .btn-run { background: var(--accent); color: #fff; border: none; padding: 1rem 2rem; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: none; display: flex; align-items: center; gap: 0.8rem; transition: 0.3s; }
-    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3); }
+    .story-input { width: 100%; height: 140px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; resize: none; }
+    .btn-run { background: var(--accent2); color: #fff; border: none; padding: 1rem 2rem; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: none; display: flex; align-items: center; gap: 0.8rem; transition: 0.3s; }
+    .btn-run:hover { box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3); }
 
-    /* Original Sections Styling */
+    /* ─── SECTION COMMON ─── */
     section { position: relative; z-index: 1; padding: 7rem 3rem; }
-    .section-tag { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
-    .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent-green); }
-    .section-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 3rem; }
-    
-    footer { border-top: 1px solid var(--border); padding: 3rem; display: flex; justify-content: space-between; align-items: center; }
-    .footer-email { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .section-tag { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .section-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1.1; margin-bottom: 3rem; }
 
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.7s ease; }
+    /* Project Cards with Orange Concept Status */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { border: 1px solid var(--border); padding: 2.5rem; background: var(--bg); transition: 0.3s; text-decoration: none; color: inherit; }
+    .project-card:hover { border-color: var(--accent2); background: var(--surface); }
+    .project-status { font-size: 0.6rem; text-transform: uppercase; padding: 0.3rem 0.7rem; border: 1px solid var(--accent); color: var(--accent); margin-bottom: 1rem; display: inline-block; }
+    .project-status.concept { border-color: var(--accent3); color: var(--accent3); } /* Orange Usage */
+
+    footer { border-top: 1px solid var(--border); padding: 3rem; display: flex; justify-content: space-between; align-items: center; }
+    .footer-email { color: var(--accent2); text-decoration: none; font-weight: 700; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
@@ -93,52 +99,50 @@
     <a href="#" class="nav-logo">BhanuPGS<span> AI</span></a>
     <ul class="nav-links">
       <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#traceability">Traceability</a></li>
+      <li><a href="#projects">Work</a></li>
       <li><a href="#collaborate">Collaborate</a></li>
-      <li class="nav-brand">BHANUPGS</li>
     </ul>
   </nav>
 
   <section class="hero">
     <div class="hero-glow"></div>
     <div class="hero-tag">Multi-Agent QA Workforce</div>
-    
-    <!-- TAGLINE HEADLINES RESTORED -->
-    <h1 class="hero-title">
-      Turn User Stories into <br><span>Test Assets.</span>
-    </h1>
+
+    <h1 class="hero-title">Turn User Stories into <br><span>Test Assets.</span></h1>
 
     <p class="hero-sub">
-      Automate the transition from raw requirements to enterprise-grade test strategies and Selenium scripts. Powered by specialized <strong>Architect</strong> and <strong>Developer</strong> AI agents.
+      Automate the transition from raw requirements to enterprise-grade test strategies and Selenium scripts. Powered by specialized <span class="agent-arch">Architect</span> and <span class="agent-dev">Developer</span> AI agents.
     </p>
 
-    <!-- INTEGRATED INPUT CONSOLE -->
-    <div class="console-box reveal">
+    <!-- INPUT CONSOLE -->
+    <div class="console-container reveal">
       <div class="console-header">
         <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
         <div style="font-size: 0.6rem; color: var(--muted);">INPUT_CONSOLE_V4.0</div>
       </div>
-      <div style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem;">Enterprise User Story</div>
-      <textarea class="story-area" placeholder="Example: As a user, I want to login to my AWS RDP portal..."></textarea>
-      <button class="btn-run">
+      <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.8rem;">Enterprise User Story</div>
+      <textarea id="storyInput" class="story-input" placeholder="Example: As a user, I want to login to my AWS RDP portal using Okta SSO..."></textarea>
+      <button class="btn-run" id="runBtn">
         <svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Generate Test Suite
       </button>
+      <div id="statusLog" style="margin-top: 1rem; font-size: 0.75rem; color: var(--muted); height: 20px;"></div>
     </div>
   </section>
 
-  <!-- RESEARCH AREAS (Original Section Restored) -->
   <section id="how-it-works">
     <div class="section-tag reveal">Traceability</div>
-    <h2 class="section-title reveal">Full lifecycle<br><em>visibility.</em></h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-      <div class="console-box reveal" style="margin-bottom: 0;">
-        <h3 style="font-family: 'Syne'; margin-bottom: 1rem;">Multi-Cloud Orchestration</h3>
-        <p style="font-size: 0.85rem; color: var(--muted);">Validate L2/L3 networking protocols across AWS, Azure, and GCP through autonomous agents.</p>
+    <h2 class="section-title reveal">Full lifecycle<br><em>automation.</em></h2>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-status">Active</div>
+        <h3 style="margin-bottom: 1rem; font-family: 'Syne';">Multi-Cloud QA</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Verifying L2/L3 networking protocols across AWS, Azure, and GCP through autonomous agentic orchestration.[cite: 1]</p>
       </div>
-      <div class="console-box reveal" style="margin-bottom: 0;">
-        <h3 style="font-family: 'Syne'; margin-bottom: 1rem;">n8n Integration</h3>
-        <p style="font-size: 0.85rem; color: var(--muted);">Seamlessly trigger agentic workflows via webhook for immediate test asset generation.</p>
+      <div class="project-card reveal">
+        <div class="project-status concept">Concept</div>
+        <h3 style="margin-bottom: 1rem; font-family: 'Syne';">Contextual Memory</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Agents that learn from multi-step execution history to optimize future testing cycles.[cite: 1]</p>
       </div>
     </div>
   </section>
@@ -150,7 +154,7 @@
   </footer>
 
   <script>
-    // Original Cursor Logic Restored[cite: 1]
+    // Cursor Script
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -163,12 +167,36 @@
     }
     animateCursor();
 
-    // Scroll Reveal Logic Restored[cite: 1]
+    // Scroll Reveal
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
+
+    // Console Logic
+    const btn = document.getElementById('runBtn');
+    const log = document.getElementById('statusLog');
+    btn.addEventListener('click', () => {
+      if(!document.getElementById('storyInput').value) return;
+      btn.innerText = "Orchestrating Agents...";
+      setTimeout(() => {
+        log.innerText = "> Workflow triggered. Payload delivered to n8n.";
+        btn.innerHTML = `<svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Generate Test Suite`;
+      }, 2000);
+    });
+
+    // Hover interactions
+    document.querySelectorAll('a,button,.project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '50px'; ring.style.height = '50px';
+        ring.style.borderColor = 'rgba(0, 102, 255, 0.6)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '36px'; ring.style.height = '36px';
+        ring.style.borderColor = 'rgba(0, 102, 255, 0.4)';
+      });
+    });
   </script>
 </body>
 </html>
