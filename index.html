@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BhanuPGS AI — Agentic QA Orchestration</title>
   
-  <!-- Premium Fonts: Inter (Professional UI) and Syne (Modern Headings) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+  <!-- Professional Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet"/>
   
   <style>
     :root {
@@ -16,12 +16,12 @@
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-blue: #3b82f6;
+      --accent-green: #00e5a0;
       --accent-orange: #ff6b35; 
       --nav-height: 80px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     html, body { 
       max-width: 100%;
       overflow-x: hidden; 
@@ -32,7 +32,7 @@
       scroll-behavior: smooth;
     }
 
-    /* Custom Cursor */
+    /* Custom Interaction Layer */
     .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent-orange); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: transform 0.1s; mix-blend-mode: screen; }
     .cursor-ring { position: fixed; width: 42px; height: 42px; border: 1.5px solid rgba(255, 107, 53, 0.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.2s ease; }
 
@@ -63,17 +63,14 @@
       padding: 0.5rem 1.2rem; border-radius: 50px; display: inline-block;
       margin-bottom: 2.5rem; border: 1px solid rgba(59, 130, 246, 0.2);
     }
-    
-    /* Updated Headline: Two-Line Structure */
     .hero-title {
       font-family: 'Syne', sans-serif; font-weight: 800;
       font-size: clamp(2rem, 5.5vw, 4.5rem); 
       line-height: 1.1; width: 100%; max-width: 1200px;
       margin-bottom: 1.5rem; letter-spacing: -0.02em;
     }
-    .hero-title span { display: block; color: var(--accent-blue); } /* Forces "Test Assets" to line 2 */
+    .hero-title span { display: block; color: var(--accent-blue); }
     
-    /* Single-Line Subline Scaling */
     .hero-sub {
       color: var(--text-muted); font-size: clamp(0.75rem, 1.3vw, 1rem);
       width: 100%; max-width: 1300px; margin-bottom: 4.5rem;
@@ -104,12 +101,28 @@
       margin-top: 1.8rem; width: 100%; background: #fff; color: #000;
       border: none; padding: 1.2rem; border-radius: 12px;
       font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase;
-      cursor: pointer; transition: 0.3s; letter-spacing: 0.05em;
+      cursor: none; transition: 0.3s; letter-spacing: 0.05em;
     }
     .btn-exec:hover { background: var(--accent-orange); color: #fff; transform: translateY(-3px); }
 
+    /* Architecture Section */
+    section { padding: 8rem 6%; z-index: 10; position: relative; }
+    .section-tag { font-size: 0.65rem; color: var(--accent-green); text-transform: uppercase; font-weight: 800; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .section-title { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 300; margin-bottom: 4rem; color: #fff; }
+    .section-title em { font-style: italic; color: var(--accent-orange); }
+
+    .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .arch-card { border: 1px solid var(--border); padding: 2.5rem; background: rgba(255,255,255,0.01); transition: 0.4s; border-radius: 8px; }
+    .arch-card:hover { border-color: var(--accent-blue); background: rgba(255,255,255,0.03); transform: translateY(-5px); }
+    .arch-num { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--accent-orange); margin-bottom: 1.5rem; }
+    .arch-card h3 { font-family: 'Syne'; font-size: 1.1rem; margin-bottom: 1rem; color: #fff; }
+    .arch-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; }
+
     footer { padding: 4rem 6%; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
     .footer-mail { color: var(--accent-blue); font-weight: 800; text-decoration: none; transition: 0.3s; font-size: 0.95rem; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 1100px) {
       .hero-sub { white-space: normal; }
@@ -125,6 +138,7 @@
     <a href="#" class="nav-logo">BhanuPGS<span> AI</span></a>
     <ul class="nav-links">
       <li><a href="#orchestrator">Orchestrator</a></li>
+      <li><a href="#architecture">Architecture</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -150,6 +164,35 @@
     </div>
   </section>
 
+  <!-- ARCHITECTURE SECTION -->
+  <section id="architecture">
+    <div class="section-tag reveal">System Design</div>
+    <h2 class="section-title reveal">The <em>Orchestration</em> Stack.</h2>
+    
+    <div class="arch-grid">
+      <div class="arch-card reveal">
+        <div class="arch-num">LAYER_01</div>
+        <h3>Multi-Agent Systems (MAS)</h3>
+        <p>Proprietary architecture where specialized AI agents autonomously parse requirements and draft Selenium automation suites.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">LAYER_02</div>
+        <h3>n8n Agentic Logic</h3>
+        <p>Workflows are managed via n8n orchestration, ensuring a seamless transition from raw user stories to execution-ready assets.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">LAYER_03</div>
+        <h3>Secure Authentication</h3>
+        <p>Access is managed through robust OAuth 2.0 protocols and enterprise SSO, protecting sensitive agentic workflows and telemetry.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">LAYER_04</div>
+        <h3>Automated Asset Delivery</h3>
+        <p>Generated test strategies and Selenium scripts are instantly delivered via secure links or direct private GitHub repository integration.</p>
+      </div>
+    </div>
+  </section>
+
   <footer id="contact">
     <div class="nav-logo" style="font-size: 1rem;">BhanuPGS<span> AI</span></div>
     <a href="mailto:gbhanu@bhanupgs.in" class="footer-mail">gbhanu@bhanupgs.in →</a>
@@ -157,7 +200,6 @@
   </footer>
 
   <script>
-    // Cursor Physics
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -170,7 +212,11 @@
     }
     animateCursor();
 
-    // Button Logic
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
     const btn = document.getElementById('runBtn');
     btn.addEventListener('click', function() {
       if(!document.getElementById('storyInput').value) return;
@@ -179,12 +225,11 @@
       this.style.color = "#fff";
       setTimeout(() => {
         this.innerHTML = "Workflow Delivered to n8n";
-        this.style.background = "#22c55e";
+        this.style.background = "#00e5a0";
       }, 2000);
     });
 
-    // Hover Interaction
-    document.querySelectorAll('a, button, textarea').forEach(el => {
+    document.querySelectorAll('a, button, textarea, .arch-card').forEach(el => {
       el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%, -50%) scale(1.4)'; ring.style.borderColor = 'rgba(255, 107, 53, 0.8)'; });
       el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%, -50%) scale(1)'; ring.style.borderColor = 'rgba(255, 107, 53, 0.4)'; });
     });
