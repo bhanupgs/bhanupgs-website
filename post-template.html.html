@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Technical Report — BhanuPGS AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+  
+  <style>
+    :root {
+      --bg: #020617; 
+      --surface: #0d1117;
+      --border: rgba(255, 255, 255, 0.08);
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-orange: #ff6b35; 
+      --nav-height: 80px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; }
+
+    nav {
+      position: fixed; top: 0; width: 100%; height: var(--nav-height); z-index: 1000;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 6%; background: rgba(2, 6, 23, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: #fff; }
+    .nav-logo span { color: var(--accent-blue); }
+
+    .article-wrapper { max-width: 750px; margin: 0 auto; padding: 12rem 6% 8rem; }
+    .meta-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent-orange); margin-bottom: 1rem; }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; color: #fff; margin-bottom: 2rem; }
+    p { margin-bottom: 1.5rem; font-size: 1.05rem; color: var(--text-main); }
+    
+    .code-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #fff; margin: 2rem 0; overflow-x: auto; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-blue); text-decoration: none; font-weight: 700; margin-bottom: 3rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">BhanuPGS<span> AI</span></a>
+  </nav>
+
+  <main class="article-wrapper">
+    <a href="blog.html" class="back-btn">← Back to Insights</a>
+    <div class="meta-tag">TECHNICAL REPORT // GENERATIVE QUALITY ENGINEERING</div>
+    <h1>Rethinking Flaky Tests: The Case for Autonomous Heuristic Code Critiques</h1>
+    
+    <p>In legacy software test environments, flaky test executions are often treated as environmental background radiation—an annoying but unavoidable artifact of distributed networks. However, within autonomous agent deployments, flakiness typically surfaces as a clear design hallucination.</p>
+    
+    <p>By leveraging code-first multi-agent frameworks like CrewAI, we can completely eliminate this liability. Rather than directly executing a freshly generated Selenium string script, the stack introduces an isolated code critique phase.</p>
+    
+    <div class="code-block">
+# Simulation of Heuristic Agent Execution Checking Bindings
+if element.is_displayed() == False:
+    agent.trigger_self_healing_loop(context="DOM_STALE_ELEMENT")
+    </div>
+
+    <p>This closed loop forces the specialized Developer Agent to explicitly review raw stack execution logs, adjust binding values dynamically at runtime, and ensure that validation paths align deterministically with original business targets before the artifact is delivered back to n8n.</p>
+  </main>
+
+</body>
+</html>

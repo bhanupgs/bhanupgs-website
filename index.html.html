@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BhanuPGS AI — Agentic QA Orchestration & Enterprise QE</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet"/>
+  
+  <style>
+    :root {
+      --bg: #020617; 
+      --surface: #0d1117;
+      --border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-green: #00e5a0;
+      --accent-orange: #ff6b35; 
+      --nav-height: 80px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { 
+      max-width: 100%;
+      overflow-x: hidden; 
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Interaction Layer */
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent-orange); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: transform 0.1s; mix-blend-mode: screen; }
+    .cursor-ring { position: fixed; width: 42px; height: 42px; border: 1.5px solid rgba(255, 107, 53, 0.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.2s ease; }
+
+    /* Navigation */
+    nav {
+      position: fixed; top: 0; width: 100%; height: var(--nav-height); z-index: 1000;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 6%;
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: #fff; letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--accent-blue); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s ease; }
+    .nav-links a:hover { color: var(--accent-orange); }
+
+    /* Hero Section */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10rem 5% 4rem; text-align: center; z-index: 10;
+    }
+    .hero-tag {
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--accent-blue); background: rgba(59, 130, 246, 0.1);
+      padding: 0.5rem 1.2rem; border-radius: 50px; display: inline-block;
+      margin-bottom: 2.5rem; border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2rem, 5.5vw, 4.5rem); 
+      line-height: 1.1; width: 100%; max-width: 1200px;
+      margin-bottom: 1.5rem; letter-spacing: -0.02em;
+    }
+    .hero-title span { display: block; color: var(--accent-blue); }
+    
+    .hero-sub {
+      color: var(--text-muted); font-size: clamp(0.75rem, 1.3vw, 1rem);
+      width: 100%; max-width: 1300px; margin-bottom: 4.5rem;
+      white-space: nowrap; 
+      letter-spacing: 0.01em;
+    }
+    .hero-sub b { color: #fff; font-weight: 600; }
+    .hero-sub .orange { color: var(--accent-orange); font-weight: 600; }
+
+    /* Console UI */
+    .console-card {
+      width: 100%; max-width: 850px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 24px;
+      padding: 2.5rem; position: relative; margin-bottom: 5rem;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    }
+    .console-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); display: inline-block; margin-right: 6px; }
+
+    textarea {
+      width: 100%; height: 160px; background: rgba(0,0,0,0.25); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; resize: none; transition: 0.3s;
+    }
+    textarea:focus { outline: none; border-color: var(--accent-blue); }
+
+    .btn-exec {
+      margin-top: 1.8rem; width: 100%; background: #fff; color: #000;
+      border: none; padding: 1.2rem; border-radius: 12px;
+      font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase;
+      cursor: none; transition: 0.3s; letter-spacing: 0.05em;
+    }
+    .btn-exec:hover { background: var(--accent-orange); color: #fff; transform: translateY(-3px); }
+
+    /* Layout Sections */
+    section { padding: 6rem 6%; z-index: 10; position: relative; }
+    .section-tag { font-size: 0.65rem; color: var(--accent-green); text-transform: uppercase; font-weight: 800; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .section-title { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 300; margin-bottom: 4rem; color: #fff; }
+    .section-title em { font-style: italic; color: var(--accent-orange); }
+
+    /* MVP Lifecycle Roadmap Styling */
+    .roadmap-timeline { display: flex; flex-direction: column; max-width: 850px; margin: 0 auto; gap: 2rem; position: relative; }
+    .roadmap-timeline::before { content: ''; position: absolute; left: 20px; top: 10px; bottom: 10px; width: 2px; background: var(--border); }
+    .roadmap-step { display: flex; gap: 2rem; align-items: flex-start; position: relative; padding-left: 3rem; }
+    .roadmap-node { position: absolute; left: 11px; top: 6px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); transition: 0.3s; }
+    .roadmap-step.active .roadmap-node { border-color: var(--accent-orange); background: var(--accent-orange); box-shadow: 0 0 12px var(--accent-orange); }
+    .roadmap-step.upcoming .roadmap-node { border-color: var(--accent-blue); }
+    .roadmap-content h4 { font-family: 'Syne'; font-size: 1.1rem; color: #fff; margin-bottom: 0.4rem; }
+    .roadmap-content p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* Architecture Section */
+    .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .arch-card { border: 1px solid var(--border); padding: 2.5rem; background: rgba(255,255,255,0.01); transition: 0.4s; border-radius: 8px; }
+    .arch-card:hover { border-color: var(--accent-blue); background: rgba(255,255,255,0.03); transform: translateY(-5px); }
+    .arch-num { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--accent-orange); margin-bottom: 1.5rem; }
+    .arch-card h3 { font-family: 'Syne'; font-size: 1.1rem; margin-bottom: 1rem; color: #fff; }
+    .arch-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; }
+
+    footer { padding: 4rem 6%; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+    .footer-mail { color: var(--accent-blue); font-weight: 800; text-decoration: none; transition: 0.3s; font-size: 0.95rem; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1100px) {
+      .hero-sub { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <a href="#" class="nav-logo">BhanuPGS<span> AI</span></a>
+    <ul class="nav-links">
+      <li><a href="#orchestrator">Orchestrator</a></li>
+      <li><a href="#roadmap">MVP Lifecycle</a></li>
+      <li><a href="#architecture">QE Architecture</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-tag">BhanuPGS AI Research Lab</div>
+    <h1 class="hero-title">
+      Turn User Stories into 
+      <span>Test Assets.</span>
+    </h1>
+    <p class="hero-sub">
+      Automate the transition from raw requirements to enterprise-grade test strategies. Powered by specialized <b>Architect</b> and <span class="orange">Developer</span> AI agents.
+    </p>
+
+    <div id="orchestrator" class="console-card">
+      <div class="console-header">
+        <div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div style="font-family: 'JetBrains Mono'; font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">INPUT_CONSOLE_V4.0</div>
+      </div>
+      <div style="text-align: left; font-weight: 700; font-size: 0.85rem; margin-bottom: 1.2rem; color: #fff;">Enterprise User Story Context</div>
+      <textarea id="storyInput" placeholder="As a network engineer, I want to verify multi-cloud L3 traffic routing between AWS and GCP regions..."></textarea>
+      <button class="btn-exec" id="runBtn">Execute Agentic Workflow</button>
+    </div>
+  </section>
+
+  <section id="roadmap" style="background: rgba(255,255,255,0.01); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-tag reveal">Product Evolution</div>
+    <h2 class="section-title reveal">The <em>MVP Lifecycle</em> Roadmap.</h2>
+    
+    <div class="roadmap-timeline">
+      <div class="roadmap-step active reveal">
+        <div class="roadmap-node"></div>
+        <div class="roadmap-content">
+          <h4>Phase 1: Multi-Agent Logic &amp; n8n Gateway (Current)</h4>
+          <p>Validating deterministic conversion loops. The front-end triggers a visual gateway which routes payload data to a backend python stack where specialized Architect and Developer models parse requirements and output raw test code.</p>
+        </div>
+      </div>
+      <div class="roadmap-step upcoming reveal">
+        <div class="roadmap-node"></div>
+        <div class="roadmap-content">
+          <h4>Phase 2: Closed-Loop Execution Sandbox</h4>
+          <p>Integrating sandboxed runtimes directly into the execution flow to natively compile generated code scripts, capturing internal execution feedback to fix compilation anomalies instantly via self-healing loops.</p>
+        </div>
+      </div>
+      <div class="roadmap-step upcoming reveal">
+        <div class="roadmap-node"></div>
+        <div class="roadmap-content">
+          <h4>Phase 3: Multi-Cloud Infrastructure Simulation</h4>
+          <p>Deploying ephemeral software topologies directly across AWS, GCP, and Azure targets to execute live, distributed integration tests on automated routing protocols.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="section-tag reveal">QE Framework Architecture</div>
+    <h2 class="section-title reveal">The <em>Autonomous</em> Quality Stack.</h2>
+    
+    <div class="arch-grid">
+      <div class="arch-card reveal">
+        <div class="arch-num">MODULE_01</div>
+        <h3>Visual Automation Platform</h3>
+        <p>Utilizing n8n as a visually deterministic gateway and asynchronous payload routing system. It handles high-traffic API requests, logging, and error tracking via an intuitive flowchart control plane.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">MODULE_02</div>
+        <h3>Multi-Agent Execution</h3>
+        <p>Powered by code-first frameworks like CrewAI. Specialized agents run inside independent Python containers to manage long-term context memory, perform code critique, and eliminate code hallucinations.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">MODULE_03</div>
+        <h3>Sovereign Authentication</h3>
+        <p>Secured via custom OAuth 2.0 and enterprise SSO. Users explicitly connect and authenticate their own private target data stores, keeping platform access secure and private.</p>
+      </div>
+      <div class="arch-card reveal">
+        <div class="arch-num">MODULE_04</div>
+        <h3>Secure Code Delivery</h3>
+        <p>Generated test assets and Selenium strategies are returned to the visual platform layer to be pushed securely to the user via private GitHub webhooks or encrypted cloud storage links.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="nav-logo" style="font-size: 1rem;">BhanuPGS<span> AI</span></div>
+    <a href="mailto:gbhanu@bhanupgs.in" class="footer-mail">gbhanu@bhanupgs.in →</a>
+    <p style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">© 2026 Independent AI Research Lab</p>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    const btn = document.getElementById('runBtn');
+    btn.addEventListener('click', function() {
+      if(!document.getElementById('storyInput').value) return;
+      this.innerText = "Orchestrating Agents...";
+      this.style.background = "#ff6b35";
+      this.style.color = "#fff";
+      setTimeout(() => {
+        this.innerHTML = "Visual Gateway Pipeline Triggered";
+        this.style.background = "#00e5a0";
+      }, 2000);
+    });
+
+    document.querySelectorAll('a, button, textarea, .arch-card, .roadmap-step').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%, -50%) scale(1.4)'; ring.style.borderColor = 'rgba(255, 107, 53, 0.8)'; });
+      el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%, -50%) scale(1)'; ring.style.borderColor = 'rgba(255, 107, 53, 0.4)'; });
+    });
+  </script>
+</body>
+</html>
